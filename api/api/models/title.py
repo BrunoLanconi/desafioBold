@@ -51,14 +51,12 @@ class Title(models.Model):  # model name
                              help_text="This represents the title image URL.",
                              verbose_name="Poster URL",
                              )
-    imdb_rating = models.FloatField(max_length=6,
-                                    blank=False,
+    imdb_rating = models.FloatField(blank=False,
                                     primary_key=False,
                                     help_text="This represents the title rating.",
                                     verbose_name="Rating",
                                     )
-    total_seasons = models.IntegerField(max_length=3,
-                                        blank=False,
+    total_seasons = models.IntegerField(blank=False,
                                         primary_key=False,
                                         help_text="This represents the title number of seasons.",
                                         verbose_name="Number of seasons",

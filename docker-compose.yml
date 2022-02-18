@@ -26,7 +26,6 @@ services:  # Lists all setup
         image: bold/api
         container_name: bold_api1
         volumes:
-            - "./api/api:/app/api"
             - "./docker/config/api_apache.conf:/etc/apache2/conf-enabled/api_apache.conf"
         command: bash -c "python wait_for_database.py && python manage.py collectstatic --noinput && python manage.py makemigrations && python manage.py migrate && python manage.py createsuperuser --noinput || true && apache2ctl -D FOREGROUND"
         ports:
@@ -55,7 +54,6 @@ services:  # Lists all setup
         image: bold/api
         container_name: bold_api2
         volumes:
-            - "./api/api:/app/api"
             - "./docker/config/api_apache.conf:/etc/apache2/conf-enabled/api_apache.conf"
         command: bash -c "python wait_for_django_parent.py && python manage.py collectstatic --noinput && apache2ctl -D FOREGROUND"
         ports:
@@ -86,7 +84,6 @@ services:  # Lists all setup
         image: bold/api
         container_name: bold_api3
         volumes:
-            - "./api/api:/app/api"
             - "./docker/config/api_apache.conf:/etc/apache2/conf-enabled/api_apache.conf"
         command: bash -c "python wait_for_django_parent.py && python manage.py collectstatic --noinput && apache2ctl -D FOREGROUND"
         ports:

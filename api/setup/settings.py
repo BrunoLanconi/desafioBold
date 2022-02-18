@@ -32,7 +32,10 @@ ALLOWED_HOSTS = ["*"]
 API_PORT = os.environ.get('API_PORT')
 # On prod, you need to specify the correct domain name to avoid CSRF error
 APP_DOMAIN = os.environ.get('APP_DOMAIN', "localhost")
-CSRF_TRUSTED_ORIGINS = [f'http://{APP_DOMAIN}:{API_PORT}', f'https://{APP_DOMAIN}:{API_PORT}']
+CSRF_TRUSTED_ORIGINS = [f'http://{APP_DOMAIN}:{API_PORT}',
+                        f'https://{APP_DOMAIN}:{API_PORT}',
+                        f'http://{APP_DOMAIN}:80',
+                        f'https://{APP_DOMAIN}:80']
 
 # Application definition
 
