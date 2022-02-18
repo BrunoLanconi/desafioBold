@@ -1,10 +1,10 @@
 from django.contrib import admin
-from .models.sample import Sample
+from .models.title import Title
 
 
-class Samples(admin.ModelAdmin):  # Adding model on admin console
+class Titles(admin.ModelAdmin):  # Adding model on admin console
     # Choosing what fields will be displayed on admin
-    list_display = ("id", "name")
+    list_display = ("imdb_id", "title")
 
 
-admin.site.register(Sample, Samples)  # Registering model on admin console
+admin.site.register(Title, Titles)  # Registering model on admin console
