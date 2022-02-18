@@ -5,3 +5,6 @@
 database/api_data
 database/main_site_data
 services/services.log
+.idea
+api/api/migrations
+docker-compose-backup.yml

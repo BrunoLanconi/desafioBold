@@ -1,7 +1,7 @@
 # Desafio Bold
 A web page/API capable of gathering omdbapi data and delivery via REST/HTTP.<br>
 
-![Solution structure]()
+![Solution structure](https://github.com/BrunoLanconi/desafioBold/blob/main/imgs/solution_structure.png)
 
 # Variables
 
