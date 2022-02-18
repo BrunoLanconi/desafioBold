@@ -1,0 +1,8 @@
+django
+djangorestframework
+pytz
+markdown
+mysqlclient
+mysql-connector-python
+requests
+django-cors-headers

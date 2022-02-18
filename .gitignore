@@ -1,0 +1,7 @@
+
+.gitattributes
+*.pyc
+*.sqlite3
+database/api_data
+database/main_site_data
+services/services.log

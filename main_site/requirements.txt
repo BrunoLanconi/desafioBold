@@ -1,0 +1,6 @@
+django
+django-allauth
+django-crispy-forms
+mysqlclient
+mysql-connector-python
+requests
