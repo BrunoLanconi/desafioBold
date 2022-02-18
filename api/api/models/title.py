@@ -12,7 +12,7 @@ class Title(models.Model):  # model name
     """
     imdb_id = models.CharField(max_length=10,  # field max length
                                blank=False,  # required
-                               primary_key=True,  # not is a primary key
+                               primary_key=True,  # is a primary key
                                help_text="This represents the title ID.",  # field guide
                                verbose_name="Title ID",  # human readable field definition
                                )  # field definition
