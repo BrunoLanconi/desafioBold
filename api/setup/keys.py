@@ -1,1 +1,1 @@
-keys = {"SECRET_KEY": ""}
+keys = {"SECRET_KEY": "debug"}

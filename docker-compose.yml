@@ -41,6 +41,7 @@ services:  # Lists all setup
             MYSQL_HOST: bold_api_database
             MYSQL_PORT: 3306
             APP_DOMAIN: ${APP_DOMAIN:-localhost}  # APP_DOMAIN is the domain name used by server. Usually set on PROD via console. If unset, uses 'localhost'.
+            DEBUG: True  # DEBUG is used to set a test environment when running instance locally
         networks:
             - bold_network
         restart: always
@@ -71,6 +72,7 @@ services:  # Lists all setup
             MYSQL_HOST: bold_api_database
             MYSQL_PORT: 3306
             APP_DOMAIN: ${APP_DOMAIN:-localhost}  # APP_DOMAIN is the domain name used by server. Usually set on PROD via console. If unset, uses 'localhost'.
+            DEBUG: True  # DEBUG is used to set a test environment when running instance locally
         networks:
             - bold_network
         restart: always
@@ -101,6 +103,7 @@ services:  # Lists all setup
             MYSQL_HOST: bold_api_database
             MYSQL_PORT: 3306
             APP_DOMAIN: ${APP_DOMAIN:-localhost}  # APP_DOMAIN is the domain name used by server. Usually set on PROD via console. If unset, uses 'localhost'.
+            DEBUG: True  # DEBUG is used to set a test environment when running instance locally
         networks:
             - bold_network
         restart: always
