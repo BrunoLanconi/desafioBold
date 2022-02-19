@@ -13,12 +13,12 @@ class Episode(models.Model):  # model name
                                help_text="This represents the episode ID.",
                                verbose_name="Episode ID",
                                )
-    title_id = models.ForeignKey(Title,
-                                 on_delete=models.CASCADE,
-                                 blank=False,
-                                 help_text="This represents the episode owner title.",
-                                 verbose_name="Episode owner title",
-                                 )
+    episode_owner_title = models.ForeignKey(Title,
+                                            on_delete=models.CASCADE,
+                                            blank=False,
+                                            help_text="This represents the episode owner title.",
+                                            verbose_name="Episode owner title",
+                                            )
     title = models.CharField(max_length=96,
                              blank=False,
                              primary_key=False,
@@ -30,7 +30,8 @@ class Episode(models.Model):  # model name
                                                       help_text="This represents the episode number.",
                                                       verbose_name="Episode number",
                                                       )
-    runtime = models.PositiveSmallIntegerField(blank=False,
+    runtime = models.PositiveSmallIntegerField(blank=True,
+                                               null=True,
                                                primary_key=False,
                                                help_text="This represents the episode runtime.",
                                                verbose_name="Runtime",
@@ -53,12 +54,12 @@ class Episode(models.Model):  # model name
                                     help_text="This represents the episode rating.",
                                     verbose_name="Rating",
                                     )
-    episodes = models.ForeignKey(Season,
-                                 on_delete=models.CASCADE,
-                                 related_name="episodes",
-                                 help_text="This represents the episode owner season.",
-                                 verbose_name="Episode owner",
-                                 )
+    episode_owner_season = models.ForeignKey(Season,
+                                             on_delete=models.CASCADE,
+                                             related_name="episodes",
+                                             help_text="This represents the episode owner season.",
+                                             verbose_name="Episode owner season",
+                                             )
 
     def __str__(self):
         return self.title

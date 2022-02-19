@@ -1,11 +1,12 @@
 from rest_framework import viewsets, generics
 from .models.episode import Episode
 from .models.genre import Genre
+from .models.language import Language
 from .models.release import TitleRelease, EpisodeRelease
 from .models.season import Season
 from .models.title import Title
-from .serializer import EpisodesSerializer, GenresSerializer, TitleReleasesSerializer, EpisodeReleasesSerializer, \
-    SeasonsSerializer, TitlesSerializer
+from .serializer import EpisodesSerializer, GenresSerializer, LanguagesSerializer, TitleReleasesSerializer, \
+    EpisodeReleasesSerializer, SeasonsSerializer, TitlesSerializer
 from django.core.exceptions import ValidationError
 
 
@@ -29,6 +30,16 @@ class GenresViewSet(viewsets.ModelViewSet):
     """
     queryset = Genre.objects.all()
     serializer_class = GenresSerializer
+    # authentication_classes = [BasicAuthentication]
+    # permission_classes = [IsAuthenticated]
+
+
+class LanguagesViewSet(viewsets.ModelViewSet):
+    """
+    Shows all languages
+    """
+    queryset = Language.objects.all()
+    serializer_class = LanguagesSerializer
     # authentication_classes = [BasicAuthentication]
     # permission_classes = [IsAuthenticated]
 

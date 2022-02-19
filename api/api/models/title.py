@@ -24,12 +24,6 @@ class Title(models.Model):  # model name
                             help_text="This represents the title plot.",
                             verbose_name="Plot",
                             )
-    language = models.CharField(max_length=32,
-                                blank=False,
-                                primary_key=False,
-                                help_text="This represents the title language.",
-                                verbose_name="Language",
-                                )
     poster = models.URLField(blank=False,
                              primary_key=False,
                              help_text="This represents the title image URL.",

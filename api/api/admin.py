@@ -1,29 +1,39 @@
 from django.contrib import admin
 from .models.episode import Episode
 from .models.genre import Genre
+from .models.language import Language
 from .models.release import TitleRelease, EpisodeRelease
 from .models.season import Season
 from .models.title import Title
 
 
 class Episodes(admin.ModelAdmin):  # Adding model on admin console
-    list_display = ("title_id", "episodes", "title")  # Choosing what fields will be displayed on admin
+    # Choosing what fields will be displayed on admin
+    list_display = ("episode_owner_title", "episode_owner_season", "title")
+    list_display_links = ("title",)
 
 
 class Genres(admin.ModelAdmin):
-    list_display = ("genres", "name")
+    list_display = ("genre_owner_title", "name")
+    list_display_links = ("name",)
+
+
+class Languages(admin.ModelAdmin):
+    list_display = ("language_owner_title", "name")
+    list_display_links = ("name", )
 
 
 class TitleReleases(admin.ModelAdmin):
-    list_display = ("title_release", )
+    list_display = ("release_owner_title", )
 
 
 class EpisodeReleases(admin.ModelAdmin):
-    list_display = ("episode_release", )
+    list_display = ("release_owner_episode", )
 
 
 class Seasons(admin.ModelAdmin):
-    list_display = ("season_number", )
+    list_display = ("season_owner_title", "season_number", )
+    list_display_links = ("season_owner_title", "season_number", )
 
 
 class Titles(admin.ModelAdmin):
@@ -32,6 +42,7 @@ class Titles(admin.ModelAdmin):
 
 admin.site.register(Episode, Episodes)  # Registering model on admin console
 admin.site.register(Genre, Genres)
+admin.site.register(Language, Languages)
 admin.site.register(TitleRelease, TitleReleases)
 admin.site.register(EpisodeRelease, EpisodeReleases)
 admin.site.register(Season, Seasons)

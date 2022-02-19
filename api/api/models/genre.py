@@ -12,12 +12,12 @@ class Genre(models.Model):
                             help_text="This represents the genre presentation name.",
                             verbose_name="Genre name",
                             )
-    genres = models.ForeignKey(Title,
-                               on_delete=models.CASCADE,
-                               related_name="genres",
-                               help_text="This represents the season owner title.",
-                               verbose_name="Season owner",
-                               )
+    genre_owner_title = models.ForeignKey(Title,
+                                          on_delete=models.CASCADE,
+                                          related_name="genres",
+                                          help_text="This represents the genre owner title.",
+                                          verbose_name="Genre owner",
+                                          )
 
     def __str__(self):
         return self.name
