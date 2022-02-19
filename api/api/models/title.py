@@ -17,14 +17,9 @@ class Title(models.Model):  # model name
                              help_text="This represents the title presentation name.",
                              verbose_name="Title name",
                              )
-    released = models.CharField(max_length=10,
-                                blank=False,
-                                primary_key=False,
-                                help_text="This represents the title launch date.",
-                                verbose_name="Launch date",
-                                )
     plot = models.CharField(max_length=256,
-                            blank=False,
+                            blank=True,
+                            null=True,
                             primary_key=False,
                             help_text="This represents the title plot.",
                             verbose_name="Plot",
@@ -40,11 +35,14 @@ class Title(models.Model):  # model name
                              help_text="This represents the title image URL.",
                              verbose_name="Poster URL",
                              )
-    imdb_rating = models.FloatField(blank=False,
+    imdb_rating = models.FloatField(blank=True,
+                                    null=True,
                                     primary_key=False,
                                     help_text="This represents the title rating.",
                                     verbose_name="Rating",
                                     )
+    created = models.DateTimeField(auto_now=True)
+    updated = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.title

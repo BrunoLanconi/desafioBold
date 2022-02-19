@@ -6,12 +6,6 @@ class Season(models.Model):  # model name
     """
     A model for season table
     """
-    title = models.CharField(max_length=96,
-                             blank=False,
-                             primary_key=False,
-                             help_text="This represents the season title presentation name.",
-                             verbose_name="Season title name",
-                             )
     season_number = models.PositiveSmallIntegerField(blank=False,
                                                      primary_key=False,
                                                      help_text="This represents the season number.",
@@ -25,4 +19,4 @@ class Season(models.Model):  # model name
                                 )  # Sets a foreign key
 
     def __str__(self):
-        return self.title
+        return self.season_number

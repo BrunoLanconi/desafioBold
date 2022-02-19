@@ -25,24 +25,19 @@ class Episode(models.Model):  # model name
                              help_text="This represents the title presentation name.",
                              verbose_name="Title name",
                              )
-    episode_number = models.IntegerField(blank=False,
-                                         primary_key=False,
-                                         help_text="This represents the episode number.",
-                                         verbose_name="Episode number",
-                                         )
-    released = models.CharField(max_length=10,
-                                blank=False,
-                                primary_key=False,
-                                help_text="This represents the title launch date.",
-                                verbose_name="Launch date",
-                                )
-    runtime = models.IntegerField(blank=False,
-                                  primary_key=False,
-                                  help_text="This represents the episode runtime.",
-                                  verbose_name="Runtime",
-                                  )
+    episode_number = models.PositiveSmallIntegerField(blank=False,
+                                                      primary_key=False,
+                                                      help_text="This represents the episode number.",
+                                                      verbose_name="Episode number",
+                                                      )
+    runtime = models.PositiveSmallIntegerField(blank=False,
+                                               primary_key=False,
+                                               help_text="This represents the episode runtime.",
+                                               verbose_name="Runtime",
+                                               )
     plot = models.CharField(max_length=256,
-                            blank=False,
+                            blank=True,
+                            null=True,
                             primary_key=False,
                             help_text="This represents the episode plot.",
                             verbose_name="Plot",
@@ -52,7 +47,8 @@ class Episode(models.Model):  # model name
                              help_text="This represents the episode image URL.",
                              verbose_name="Poster URL",
                              )
-    imdb_rating = models.FloatField(blank=False,
+    imdb_rating = models.FloatField(blank=True,
+                                    null=True,
                                     primary_key=False,
                                     help_text="This represents the episode rating.",
                                     verbose_name="Rating",
