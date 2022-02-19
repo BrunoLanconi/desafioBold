@@ -1,6 +1,6 @@
 from django.urls import path, include
-from .views import EpisodesViewSet, GenresViewSet, LanguagesViewSet, TitleReleasesViewSet, EpisodeReleasesViewSet, SeasonsViewSet, \
-    TitlesViewSet
+from .views import EpisodesViewSet, GenresViewSet, LanguagesViewSet, TitleReleasesViewSet, EpisodeReleasesViewSet, \
+    SeasonsViewSet, TitlesViewSet
 from .views import FilterEpisodesList, FilterSeasonsList, FilterTitlesList
 from rest_framework import routers
 
@@ -12,7 +12,6 @@ router.register("title_releases", TitleReleasesViewSet, basename="title_releases
 router.register("episode_releases", EpisodeReleasesViewSet, basename="episode_releases")
 router.register("seasons", SeasonsViewSet, basename="seasons")
 router.register("titles", TitlesViewSet, basename="titles")
-
 
 app_name = "api"
 

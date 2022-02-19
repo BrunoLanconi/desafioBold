@@ -16,11 +16,11 @@ COPY ./utils/services/ ./services/
 RUN python -m pip install --upgrade pip &&\
     python -m pip install -r requirements.txt
 # Changing permissions so crontab can execute it
-RUN chmod 0744 hour.sh
 RUN chmod 0744 day.sh
 # Installing crontab
-RUN (crontab -l ; echo "0 * * * * /bin/sh /app/hour.sh >> /var/log/services.log") | crontab
-RUN (crontab -l ; echo "0 0 * * * /bin/sh /app/day.sh >> /var/log/services.log") | crontab
+# RUN (crontab -l ; echo "0 0 * * * /bin/sh /app/day.sh >> /var/log/services.log") | crontab
 # Creating log file, activating cron and tailing log file
 # TODO enhance CMD approach
 CMD touch /var/log/services.log && cron && tail -f /var/log/services.log
+# Gathering movies
+RUN python /app/gather_episodes.py >> /var/log/services.log

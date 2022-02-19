@@ -3,8 +3,7 @@ printf "=%.0s"  $(seq 1 63) && echo  # Creates a divider
 date  # Shows datetime
 printf "=%.0s"  $(seq 1 63) && echo
 echo  # Blank line
-python3 /app/sample.py  # Run script
-#python3 /app/sample2.py
+python3 /app/update_episodes.py  # Run script
 echo
 echo
 
