@@ -1,21 +1,21 @@
 version: "3"
 services:  # Lists all setup
-    bold_api_database:  # Service name
-        build:  # Defines build configuration
+    bold_api_database: # Service name
+        build: # Defines build configuration
             dockerfile: ./docker/database.dockerfile  # Dockerfile location
             context: .  # This docker-compose file context
         image: bold/api_database  # Image name
         container_name: bold_api_database  # Container name
-        volumes:  # Defines volume configuration, used to preserve container content on host
+        volumes: # Defines volume configuration, used to preserve container content on host
             - "./database/api_data:/var/lib/mysql"  # {host_path}:{container_path}
-        ports:  # Ports to expose, may be used to link a host port to container port with {host_port}:{container_port}
+        ports: # Ports to expose, may be used to link a host port to container port with {host_port}:{container_port}
             - "3306"
-        environment:  # Defines environment variable
+        environment: # Defines environment variable
             MYSQL_ROOT_PASSWORD: mysql
             MYSQL_USER: mysql
             MYSQL_PASSWORD: mysql
             MYSQL_DATABASE: mysql
-        networks:  # Defines intranet (container context) networks
+        networks: # Defines intranet (container context) networks
             - bold_network
         restart: always  # Defines restart policy
 
@@ -41,7 +41,7 @@ services:  # Lists all setup
             MYSQL_HOST: bold_api_database
             MYSQL_PORT: 3306
             APP_DOMAIN: ${APP_DOMAIN:-localhost}  # APP_DOMAIN is the domain name used by server. Usually set on PROD via console. If unset, uses 'localhost'.
-            DEBUG: True  # DEBUG is used to set a test environment when running instance locally
+            DEBUG: "False"  # DEBUG is used to set a test environment when running instance locally
         networks:
             - bold_network
         restart: always
@@ -72,7 +72,7 @@ services:  # Lists all setup
             MYSQL_HOST: bold_api_database
             MYSQL_PORT: 3306
             APP_DOMAIN: ${APP_DOMAIN:-localhost}  # APP_DOMAIN is the domain name used by server. Usually set on PROD via console. If unset, uses 'localhost'.
-            DEBUG: True  # DEBUG is used to set a test environment when running instance locally
+            DEBUG: "False"  # DEBUG is used to set a test environment when running instance locally
         networks:
             - bold_network
         restart: always
@@ -103,7 +103,7 @@ services:  # Lists all setup
             MYSQL_HOST: bold_api_database
             MYSQL_PORT: 3306
             APP_DOMAIN: ${APP_DOMAIN:-localhost}  # APP_DOMAIN is the domain name used by server. Usually set on PROD via console. If unset, uses 'localhost'.
-            DEBUG: True  # DEBUG is used to set a test environment when running instance locally
+            DEBUG: "False"  # DEBUG is used to set a test environment when running instance locally
         networks:
             - bold_network
         restart: always
@@ -127,6 +127,22 @@ services:  # Lists all setup
             - bold_api1
             - bold_api2
             - bold_api3
+
+    bold_services:
+        build:
+            dockerfile: ./docker/services.dockerfile
+            context: .
+        image: bold/services
+        container_name: bold_services
+        volumes:
+            - "./services:/var/log"
+        environment:
+            TITLES: 'Game of Thrones, Peaky Blinders'  # Here you may pass one or more titles
+        networks:
+            - bold_network
+        restart: always
+        depends_on:
+            - bold_api_load_balancer
 
 networks:  # Lists all intranet (container context) networks
     bold_network:  # Intranet (container context) network name
