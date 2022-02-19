@@ -1,19 +1,22 @@
 from rest_framework import viewsets, generics
-from .models.title import Title
-from .models.season import Season
 from .models.episode import Episode
-from .serializer import TitlesSerializer, SeasonsSerializer, EpisodesSerializer
+from .models.genre import Genre
+from .models.season import Season
+from .models.title import Title
+from .serializer import EpisodesSerializer, GenresSerializer, SeasonsSerializer, TitlesSerializer
 from django.core.exceptions import ValidationError
-from rest_framework.authentication import BasicAuthentication
-from rest_framework.permissions import IsAuthenticated
 
 
-class TitlesViewSet(viewsets.ModelViewSet):  # all-in-one request method treatment (GET, POST, PUT, UPDATE)
+# from rest_framework.authentication import BasicAuthentication
+# from rest_framework.permissions import IsAuthenticated
+
+
+class EpisodesViewSet(viewsets.ModelViewSet):  # all-in-one request method treatment (GET, POST, PUT, UPDATE)
     """
-    Shows all titles
+    Shows all episodes
     """
-    queryset = Title.objects.all()  # what will be returned
-    serializer_class = TitlesSerializer  # who will serialize returned content
+    queryset = Episode.objects.all()  # what will be returned
+    serializer_class = EpisodesSerializer  # who will serialize returned content
     # authentication_classes = [BasicAuthentication]  # authentication method
     # permission_classes = [IsAuthenticated]  # authentication verification method
 
@@ -28,32 +31,60 @@ class SeasonsViewSet(viewsets.ModelViewSet):
     # permission_classes = [IsAuthenticated]
 
 
-class EpisodesViewSet(viewsets.ModelViewSet):
+class GenresViewSet(viewsets.ModelViewSet):
     """
-    Shows all episodes
+    Shows all genres
     """
-    queryset = Episode.objects.all()
-    serializer_class = EpisodesSerializer
+    queryset = Genre.objects.all()
+    serializer_class = GenresSerializer
+    # authentication_classes = [BasicAuthentication]
+    # permission_classes = [IsAuthenticated]
+
+
+class TitlesViewSet(viewsets.ModelViewSet):
+    """
+    Shows all titles
+    """
+    queryset = Title.objects.all()
+    serializer_class = TitlesSerializer
     # authentication_classes = [BasicAuthentication]
     # permission_classes = [IsAuthenticated]
 
 
 # Filters
 
-class FilterTitlesList(generics.ListAPIView):
+class FilterEpisodesList(generics.ListAPIView):
     """
-    Shows all titles based on key and value
+    Shows all episodes based on key and value
     """
     def get_queryset(self):
         try:
-            queryset = Title.objects.filter(**{self.kwargs["key"]: self.kwargs["value"]})
+            queryset = Episode.objects.filter(**{self.kwargs["key"]: self.kwargs["value"]})
 
         except ValidationError:
-            queryset = Title.objects.none()
+            queryset = Episode.objects.none()
 
         return queryset
 
-    serializer_class = TitlesSerializer
+    serializer_class = EpisodesSerializer
+    # authentication_classes = [BasicAuthentication]
+    # permission_classes = [IsAuthenticated]
+
+
+class FilterGenresList(generics.ListAPIView):
+    """
+    Shows all genres based on key and value
+    """
+    def get_queryset(self):
+        try:
+            queryset = Genre.objects.filter(**{self.kwargs["key"]: self.kwargs["value"]})
+
+        except ValidationError:
+            queryset = Genre.objects.none()
+
+        return queryset
+
+    serializer_class = GenresSerializer
     # authentication_classes = [BasicAuthentication]
     # permission_classes = [IsAuthenticated]
 
@@ -76,19 +107,20 @@ class FilterSeasonsList(generics.ListAPIView):
     # permission_classes = [IsAuthenticated]
 
 
-class FilterEpisodesList(generics.ListAPIView):
+class FilterTitlesList(generics.ListAPIView):
     """
-    Shows all episodes based on key and value
+    Shows all titles based on key and value
     """
+
     def get_queryset(self):
         try:
-            queryset = Episode.objects.filter(**{self.kwargs["key"]: self.kwargs["value"]})
+            queryset = Title.objects.filter(**{self.kwargs["key"]: self.kwargs["value"]})
 
         except ValidationError:
-            queryset = Episode.objects.none()
+            queryset = Title.objects.none()
 
         return queryset
 
-    serializer_class = EpisodesSerializer
+    serializer_class = TitlesSerializer
     # authentication_classes = [BasicAuthentication]
     # permission_classes = [IsAuthenticated]

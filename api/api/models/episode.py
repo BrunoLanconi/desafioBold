@@ -1,6 +1,6 @@
 from django.db import models
-from .title import Title
 from .season import Season
+from .title import Title
 
 
 class Episode(models.Model):  # model name
@@ -19,12 +19,6 @@ class Episode(models.Model):  # model name
                                  help_text="This represents the episode owner title.",
                                  verbose_name="Episode owner title",
                                  )
-    season_id = models.ForeignKey(Season,
-                                  on_delete=models.CASCADE,
-                                  blank=False,
-                                  help_text="This represents the episode owner season.",
-                                  verbose_name="Episode owner season",
-                                  )
     title = models.CharField(max_length=96,
                              blank=False,
                              primary_key=False,
@@ -47,24 +41,12 @@ class Episode(models.Model):  # model name
                                   help_text="This represents the episode runtime.",
                                   verbose_name="Runtime",
                                   )
-    genre = models.CharField(max_length=64,
-                             blank=False,
-                             primary_key=False,
-                             help_text="This represents the episode genre.",
-                             verbose_name="Genre",
-                             )
     plot = models.CharField(max_length=256,
                             blank=False,
                             primary_key=False,
                             help_text="This represents the episode plot.",
                             verbose_name="Plot",
                             )
-    language = models.CharField(max_length=32,
-                                blank=False,
-                                primary_key=False,
-                                help_text="This represents the episode language.",
-                                verbose_name="Language",
-                                )
     poster = models.URLField(blank=False,
                              primary_key=False,
                              help_text="This represents the episode image URL.",
@@ -75,6 +57,12 @@ class Episode(models.Model):  # model name
                                     help_text="This represents the episode rating.",
                                     verbose_name="Rating",
                                     )
+    episodes = models.ForeignKey(Season,
+                                 on_delete=models.CASCADE,
+                                 related_name="episodes",
+                                 help_text="This represents the episode owner season.",
+                                 verbose_name="Episode owner",
+                                 )
 
     def __str__(self):
         return self.title

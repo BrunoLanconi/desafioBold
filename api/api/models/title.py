@@ -1,8 +1,3 @@
-"""
-title field max_length was based on
-https://www.overthinkingit.com/2011/05/17/statistical-analysis-of-movie-title-lengths/
-"""
-
 from django.db import models
 
 
@@ -28,12 +23,6 @@ class Title(models.Model):  # model name
                                 help_text="This represents the title launch date.",
                                 verbose_name="Launch date",
                                 )
-    genre = models.CharField(max_length=64,
-                             blank=False,
-                             primary_key=False,
-                             help_text="This represents the title genre.",
-                             verbose_name="Genre",
-                             )
     plot = models.CharField(max_length=256,
                             blank=False,
                             primary_key=False,
@@ -56,11 +45,6 @@ class Title(models.Model):  # model name
                                     help_text="This represents the title rating.",
                                     verbose_name="Rating",
                                     )
-    total_seasons = models.IntegerField(blank=False,
-                                        primary_key=False,
-                                        help_text="This represents the title number of seasons.",
-                                        verbose_name="Number of seasons",
-                                        )
 
     def __str__(self):
         return self.title

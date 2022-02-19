@@ -1,7 +1,8 @@
 from django.contrib import admin
-from .models.title import Title
-from .models.season import Season
 from .models.episode import Episode
+from .models.genre import Genre
+from .models.season import Season
+from .models.title import Title
 
 
 class Titles(admin.ModelAdmin):  # Adding model on admin console
@@ -10,13 +11,18 @@ class Titles(admin.ModelAdmin):  # Adding model on admin console
 
 
 class Seasons(admin.ModelAdmin):
-    list_display = ("title_id", "title")
+    list_display = ("title", )
 
 
 class Episodes(admin.ModelAdmin):
-    list_display = ("title_id", "season_id", "title")
+    list_display = ("title_id", "episodes", "title")
 
 
-admin.site.register(Title, Titles)  # Registering model on admin console
+class Genres(admin.ModelAdmin):
+    list_display = ("genres", "name")
+
+
+admin.site.register(Episode, Episodes)  # Registering model on admin console
+admin.site.register(Genre, Genres)
 admin.site.register(Season, Seasons)
-admin.site.register(Episode, Episodes)
+admin.site.register(Title, Titles)
