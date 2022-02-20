@@ -5,17 +5,44 @@ import os
 
 
 def _resume_text(text: str, length: int) -> str:
+    """
+    Resumes {text} to {length} to the latest period between first char and {length}# char window.
+    @type text: str
+    @type length: int
+    @rtype: str
+    @param text: a string representing the text to be resumed
+    @param length: an integer representing the text length
+    @return: a string representing the resumed text
+    """
     return text[:text[:length - 1].rfind(".") + 1] if len(text) >= length else text
 
 
-def _text_to_datetime(text: str, datetime_format: str) -> [datetime, None]:
+def _text_to_str_datetime(text: str, datetime_format: str, string_format: str) -> [str, None]:
+    """
+    Converts a datetime string into another datetime string. Returns None on fail.
+    @type text: str
+    @type datetime_format: str
+    @type string_format: str
+    @rtype: str or None
+    @param text: a string representing the datetime string to be converted
+    @param datetime_format: a string representing the input datetime string
+    @param string_format: a string representing the output datetime string
+    @return: a string representing the converted datetime or None
+    """
     try:
-        return datetime.strptime(text, datetime_format)
+        return datetime.strptime(text, datetime_format).strftime(string_format)
     except ValueError:
         return None
 
 
 def _text_to_float(text: str) -> [float, None]:
+    """
+    Converts {text} into float. Returns None on fail.
+    @type text: str
+    @rtype: float or None
+    @param text: a string representing the text to be converted
+    @return: a float representing the converted text or None
+    """
     try:
         return float(text)
     except ValueError:
@@ -23,6 +50,13 @@ def _text_to_float(text: str) -> [float, None]:
 
 
 def _text_to_integer(text: str) -> [int, None]:
+    """
+    Converts {text} into integer. Returns None on fail.
+    @type text: str
+    @rtype: int or None
+    @param text: a string representing the text to be converted
+    @return: an integer representing the converted text or None
+    """
     try:
         return int(text)
     except ValueError:
@@ -51,29 +85,19 @@ def main():
             client_title_languages = [e.strip() for e in client_title["Language"].split(",")]
             client_title_plot = _resume_text(text=client_title["Plot"], length=256)
             client_title_imdb_rating = _text_to_float(client_title["imdbRating"])
-            client_title_released_datetime = _text_to_datetime(client_title["Released"], "%d %b %Y")
+            client_title_released = _text_to_str_datetime(client_title["Released"], "%d %b %Y", '%Y-%m-%d')
             title_data = {
                 "imdb_id": client_title_imdb_id,
                 "title": client_title["Title"],
                 "plot": client_title_plot,
                 "poster": client_title["Poster"],
                 "imdb_rating": client_title_imdb_rating,
+                "released": client_title_released,
             }
             response = requests.post(f"http://{api_load_balancer_name}/titles/", data=title_data)
 
             if not response.ok:
                 print("ERROR", client_title_imdb_id, response.json())
-
-            title_release_data = {
-                "release_owner_title": client_title_imdb_id,
-            }
-
-            if isinstance(client_title_released_datetime, datetime):
-                title_release_data["day"] = client_title_released_datetime.day
-                title_release_data["month"] = client_title_released_datetime.month
-                title_release_data["year"] = client_title_released_datetime.year
-
-            response = requests.post(f"http://{api_load_balancer_name}/title_releases/", data=title_release_data)
 
             if not response.ok:
                 print("ERROR", client_title_imdb_id, response.json())
@@ -114,8 +138,9 @@ def main():
                         client_season_episode = client.search(imdb_id=client_season_episode_imdb_id).json()
                         client_season_episode_plot = _resume_text(text=client_season_episode["Plot"], length=256)
                         client_season_episode_rating = _text_to_float(client_season_episode["imdbRating"])
-                        client_season_episode_released_datetime = _text_to_datetime(client_season_episode["Released"],
-                                                                                    '%d %b %Y')
+                        client_season_episode_released = _text_to_str_datetime(client_season_episode["Released"],
+                                                                               '%d %b %Y',
+                                                                               '%Y-%m-%d')
                         episode_data = {
                             "imdb_id": client_season_episode_imdb_id,
                             "episode_owner_title": client_title_imdb_id,
@@ -126,22 +151,12 @@ def main():
                             "poster": client_season_episode["Poster"],
                             "imdb_rating": client_season_episode_rating,
                             "episode_owner_season": api_season["id"],
+                            "released": client_season_episode_released,
                         }
                         response = requests.post(f"http://{api_load_balancer_name}/episodes/", data=episode_data)
 
                         if not response.ok:
                             print("ERROR", client_season_episode_imdb_id, response.json())
-
-                        episode_release_data = {
-                            "release_owner_episode": client_season_episode_imdb_id,
-                        }
-
-                        if isinstance(client_season_episode_released_datetime, datetime):
-                            episode_release_data["day"] = client_season_episode_released_datetime.day
-                            episode_release_data["month"] = client_season_episode_released_datetime.month
-                            episode_release_data["year"] = client_season_episode_released_datetime.year
-
-                        requests.post(f"http://{api_load_balancer_name}/episode_releases/", data=episode_release_data)
         else:
             print(f"{title_missing} does not exist on client! Aborting add!")
 

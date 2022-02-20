@@ -2,26 +2,11 @@ from rest_framework import serializers
 from .models.episode import Episode
 from .models.genre import Genre
 from .models.language import Language
-from .models.release import TitleRelease, EpisodeRelease
 from .models.season import Season
 from .models.title import Title
 
 
-class TitleReleasesSerializer(serializers.ModelSerializer):  # used to convert information
-    class Meta:
-        model = TitleRelease  # model name to be serialized
-        fields = "__all__"  # field's model to be serialized && use '__all__' to show all fields
-
-
-class EpisodeReleasesSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = EpisodeRelease
-        fields = "__all__"
-
-
 class EpisodesSerializer(serializers.ModelSerializer):
-    released = EpisodeReleasesSerializer(read_only=True, many=True)  # nesting related serializers
-
     class Meta:
         model = Episode
         fields = ("imdb_id", "title", "episode_number", "runtime",
@@ -42,7 +27,7 @@ class LanguagesSerializer(serializers.ModelSerializer):
 
 
 class SeasonsSerializer(serializers.ModelSerializer):
-    episodes = EpisodesSerializer(read_only=True, many=True)
+    episodes = EpisodesSerializer(read_only=True, many=True)  # nesting related serializers
 
     class Meta:
         model = Season
@@ -51,7 +36,6 @@ class SeasonsSerializer(serializers.ModelSerializer):
 
 class TitlesSerializer(serializers.ModelSerializer):
     seasons = SeasonsSerializer(read_only=True, many=True)
-    released = TitleReleasesSerializer(read_only=True, many=True)
     genres = serializers.SlugRelatedField(read_only=True, many=True, slug_field="name")
     languages = serializers.SlugRelatedField(read_only=True, many=True, slug_field="name")
 

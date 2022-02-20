@@ -35,6 +35,12 @@ class Title(models.Model):  # model name
                                     help_text="This represents the title rating.",
                                     verbose_name="Rating",
                                     )
+    released = models.DateField(blank=True,
+                                null=True,
+                                primary_key=False,
+                                help_text="This represents the title released date.",
+                                verbose_name="Title released date",
+                                )
     created = models.DateTimeField(auto_now=True)
     updated = models.DateTimeField(auto_now_add=True)
 

@@ -2,7 +2,6 @@ from django.contrib import admin
 from .models.episode import Episode
 from .models.genre import Genre
 from .models.language import Language
-from .models.release import TitleRelease, EpisodeRelease
 from .models.season import Season
 from .models.title import Title
 
@@ -23,14 +22,6 @@ class Languages(admin.ModelAdmin):
     list_display_links = ("name", )
 
 
-class TitleReleases(admin.ModelAdmin):
-    list_display = ("release_owner_title", )
-
-
-class EpisodeReleases(admin.ModelAdmin):
-    list_display = ("release_owner_episode", )
-
-
 class Seasons(admin.ModelAdmin):
     list_display = ("season_owner_title", "season_number", )
     list_display_links = ("season_owner_title", "season_number", )
@@ -43,7 +34,5 @@ class Titles(admin.ModelAdmin):
 admin.site.register(Episode, Episodes)  # Registering model on admin console
 admin.site.register(Genre, Genres)
 admin.site.register(Language, Languages)
-admin.site.register(TitleRelease, TitleReleases)
-admin.site.register(EpisodeRelease, EpisodeReleases)
 admin.site.register(Season, Seasons)
 admin.site.register(Title, Titles)

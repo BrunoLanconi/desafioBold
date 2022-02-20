@@ -1,13 +1,13 @@
+from datetime import datetime
+from django.http import Http404
 from rest_framework import viewsets, generics
 from .models.episode import Episode
 from .models.genre import Genre
 from .models.language import Language
-from .models.release import TitleRelease, EpisodeRelease
 from .models.season import Season
 from .models.title import Title
-from .serializer import EpisodesSerializer, GenresSerializer, LanguagesSerializer, TitleReleasesSerializer, \
-    EpisodeReleasesSerializer, SeasonsSerializer, TitlesSerializer
-from django.core.exceptions import ValidationError
+from .serializer import EpisodesSerializer, GenresSerializer, LanguagesSerializer, SeasonsSerializer, TitlesSerializer
+from django.core.exceptions import ValidationError, FieldError
 
 
 # from rest_framework.authentication import BasicAuthentication
@@ -44,26 +44,6 @@ class LanguagesViewSet(viewsets.ModelViewSet):
     # permission_classes = [IsAuthenticated]
 
 
-class TitleReleasesViewSet(viewsets.ModelViewSet):
-    """
-    Shows all title releases
-    """
-    queryset = TitleRelease.objects.all()
-    serializer_class = TitleReleasesSerializer
-    # authentication_classes = [BasicAuthentication]
-    # permission_classes = [IsAuthenticated]
-
-
-class EpisodeReleasesViewSet(viewsets.ModelViewSet):
-    """
-    Shows all episode releases
-    """
-    queryset = EpisodeRelease.objects.all()
-    serializer_class = EpisodeReleasesSerializer
-    # authentication_classes = [BasicAuthentication]
-    # permission_classes = [IsAuthenticated]
-
-
 class SeasonsViewSet(viewsets.ModelViewSet):
     """
     Shows all seasons
@@ -90,14 +70,26 @@ class FilterEpisodesList(generics.ListAPIView):
     """
     Shows all episodes based on key and value
     """
-
     def get_queryset(self):
         try:
-            queryset = Episode.objects.filter(**{self.kwargs["key"]: self.kwargs["value"]})
+            if self.kwargs["key"] in ["imdb_rating", "runtime"]:
+                query = {self.kwargs["key"] + "__gte": self.kwargs["value"]}
+                queryset = Episode.objects.filter(**query)
 
-        except ValidationError:
-            queryset = Episode.objects.none()
+            elif self.kwargs["key"] in ["plot", "poster"]:
+                query = {self.kwargs["key"] + "__contains": self.kwargs["value"]}
+                queryset = Episode.objects.filter(**query)
 
+            elif self.kwargs["key"] in ["released"]:
+                datetime_timestamp = datetime.timestamp(self.kwargs["value"])
+                query = {self.kwargs["key"] + "__date_gte": datetime_timestamp}
+                queryset = Episode.objects.filter(**query)
+
+            else:
+                queryset = Episode.objects.filter(**{self.kwargs["key"]: self.kwargs["value"]})
+
+        except (ValidationError, FieldError, TypeError):
+            raise Http404
         return queryset
 
     serializer_class = EpisodesSerializer
@@ -114,9 +106,8 @@ class FilterSeasonsList(generics.ListAPIView):
         try:
             queryset = Season.objects.filter(**{self.kwargs["key"]: self.kwargs["value"]})
 
-        except ValidationError:
-            queryset = Season.objects.none()
-
+        except (ValidationError, FieldError, TypeError):
+            raise Http404
         return queryset
 
     serializer_class = SeasonsSerializer
@@ -128,14 +119,30 @@ class FilterTitlesList(generics.ListAPIView):
     """
     Shows all titles based on key and value
     """
-
     def get_queryset(self):
         try:
-            queryset = Title.objects.filter(**{self.kwargs["key"]: self.kwargs["value"]})
+            if self.kwargs["key"] in ["genres", "languages"]:
+                query = {self.kwargs["key"] + "__name": self.kwargs["value"]}
+                queryset = Title.objects.filter(**query)
 
-        except ValidationError:
-            queryset = Title.objects.none()
+            elif self.kwargs["key"] in ["imdb_rating"]:
+                query = {self.kwargs["key"] + "__gte": self.kwargs["value"]}
+                queryset = Title.objects.filter(**query)
 
+            elif self.kwargs["key"] in ["plot", "poster"]:
+                query = {self.kwargs["key"] + "__contains": self.kwargs["value"]}
+                queryset = Title.objects.filter(**query)
+
+            elif self.kwargs["key"] in ["released", "created", "updated"]:
+                datetime_timestamp = datetime.timestamp(self.kwargs["value"])
+                query = {self.kwargs["key"] + "__date_gte": datetime_timestamp}
+                queryset = Title.objects.filter(**query)
+
+            else:
+                queryset = Title.objects.filter(**{self.kwargs["key"]: self.kwargs["value"]})
+
+        except (ValidationError, FieldError, TypeError):
+            raise Http404
         return queryset
 
     serializer_class = TitlesSerializer

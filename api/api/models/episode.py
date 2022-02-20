@@ -60,6 +60,12 @@ class Episode(models.Model):  # model name
                                              help_text="This represents the episode owner season.",
                                              verbose_name="Episode owner season",
                                              )
+    released = models.DateField(blank=True,
+                                null=True,
+                                primary_key=False,
+                                help_text="This represents the episode released date.",
+                                verbose_name="Released date",
+                                )
 
     def __str__(self):
         return self.title

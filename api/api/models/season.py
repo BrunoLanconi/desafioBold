@@ -20,4 +20,4 @@ class Season(models.Model):  # model name
                                            )  # Sets a foreign key
 
     def __str__(self):
-        return f"Season {str(self.season_number)}"
+        return f"{self.season_owner_title} season {str(self.season_number)}"
