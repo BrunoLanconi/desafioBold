@@ -136,11 +136,16 @@ services:  # Lists all setup
         container_name: bold_services
         volumes:
             - "./services:/var/log"
+        command: bash -c "python wait_for_django_parent.py touch /var/log/services.log && /app/now.sh >> /var/log/services.log && cron && tail -f /var/log/services.log"
         environment:
             TITLES: 'Game of Thrones, Peaky Blinders'  # Here you may pass one or more titles
+            API_LOAD_BALANCER_NAME: bold_api_load_balancer
+            API_KEY: ${API_KEY:-fc9ab012}
+            DJANGO_PARENT: bold_api3  # This instance will wait for DJANGO_PARENT pinging before runserver through wait_for_django_parent.py
+            DJANGO_PARENT_PORT: 3000  # DJANGO_PARENT_PORT is the DJANGO_PARENT port
         networks:
             - bold_network
-        restart: always
+        #restart: always
         depends_on:
             - bold_api_load_balancer
 
