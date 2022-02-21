@@ -6,3 +6,4 @@ mysqlclient
 mysql-connector-python
 requests
 django-cors-headers
+drf_yasg
