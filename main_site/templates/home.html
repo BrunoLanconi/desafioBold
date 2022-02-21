@@ -4,7 +4,7 @@
 
 {% block content %}
 <!-- series -->
-{% if titles_exists != False and filtered != True %}
+{% if titles_exists == True and filtered != True %}
 <div id="series" class="our">
     <div class="container">
         {% for title in titles %}
@@ -37,7 +37,7 @@
 </div>
 
 <!-- filtered series -->
-{% elif filtered_titles_exists != False %}
+{% elif filtered_titles_exists == True %}
 <div id="series" class="our">
     <div class="container">
         {% for title in filtered_titles %}

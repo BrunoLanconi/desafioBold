@@ -217,6 +217,10 @@ img {
   overflow: hidden;
 }
 
+.episode {
+    height: 200px;
+}
+
 /**
  * Hide the overflow in IE.
  */

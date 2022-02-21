@@ -969,6 +969,16 @@
     padding: 8px 30px;
 }
 
+.btn:hover {
+    background: #FFFFFF;
+    border: #FFFFFF;
+    color: #FF0000;
+    border-radius: 0px;
+    text-transform: uppercase;
+    font-weight: 300;
+    padding: 8px 30px;
+}
+
 ul.top_icon {
     float: right;
 }
