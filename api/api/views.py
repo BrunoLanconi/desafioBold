@@ -1,12 +1,14 @@
 from datetime import datetime
 from django.http import Http404
 from rest_framework import viewsets, generics
+from .models.comment import Comment
 from .models.episode import Episode
 from .models.genre import Genre
 from .models.language import Language
 from .models.season import Season
 from .models.title import Title
-from .serializer import EpisodesSerializer, GenresSerializer, LanguagesSerializer, SeasonsSerializer, TitlesSerializer
+from .serializer import CommentsSerializer, EpisodesSerializer, GenresSerializer, LanguagesSerializer,\
+    SeasonsSerializer, TitlesSerializer
 from django.core.exceptions import ValidationError, FieldError
 
 
@@ -14,14 +16,24 @@ from django.core.exceptions import ValidationError, FieldError
 # from rest_framework.permissions import IsAuthenticated
 
 
-class EpisodesViewSet(viewsets.ModelViewSet):  # all-in-one request method treatment (GET, POST, PUT, UPDATE)
+class CommentsViewSet(viewsets.ModelViewSet):  # all-in-one request method treatment (GET, POST, PUT, UPDATE)
+    """
+    Shows all comments
+    """
+    queryset = Comment.objects.all()  # what will be returned
+    serializer_class = CommentsSerializer  # who will serialize returned content
+    # authentication_classes = [BasicAuthentication]  # authentication method
+    # permission_classes = [IsAuthenticated]  # authentication verification method
+
+
+class EpisodesViewSet(viewsets.ModelViewSet):
     """
     Shows all episodes
     """
-    queryset = Episode.objects.all()  # what will be returned
-    serializer_class = EpisodesSerializer  # who will serialize returned content
-    # authentication_classes = [BasicAuthentication]  # authentication method
-    # permission_classes = [IsAuthenticated]  # authentication verification method
+    queryset = Episode.objects.all()
+    serializer_class = EpisodesSerializer
+    # authentication_classes = [BasicAuthentication]
+    # permission_classes = [IsAuthenticated]
 
 
 class GenresViewSet(viewsets.ModelViewSet):
@@ -66,6 +78,34 @@ class TitlesViewSet(viewsets.ModelViewSet):
 
 
 # Filters
+
+
+class FilterCommentsList(generics.ListAPIView):
+    """
+    Shows all comments based on key and value
+    """
+    def get_queryset(self):
+        try:
+            if self.kwargs["key"] in ["author", "comment"]:
+                query = {self.kwargs["key"] + "__icontains": self.kwargs["value"]}
+                queryset = Comment.objects.filter(**query)
+
+            elif self.kwargs["key"] in ["created"]:
+                datetime_timestamp = datetime.timestamp(self.kwargs["value"])
+                query = {self.kwargs["key"] + "__date_gte": datetime_timestamp}
+                queryset = Comment.objects.filter(**query)
+
+            else:
+                queryset = Comment.objects.filter(**{self.kwargs["key"]: self.kwargs["value"]})
+
+        except (ValidationError, FieldError, TypeError):
+            raise Http404
+        return queryset
+
+    serializer_class = CommentsSerializer
+    # authentication_classes = [BasicAuthentication]
+    # permission_classes = [IsAuthenticated]
+
 
 class FilterEpisodesList(generics.ListAPIView):
     """
