@@ -45,13 +45,15 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'django.contrib.staticfiles',
     # django-cors-headers dependencies
     'corsheaders',
     # djangorestframework dependencies
     'rest_framework',
     # app dependencies
     'api',
+    # Documentation dependencies
+    'django.contrib.staticfiles',
+    'drf_yasg'
 ]
 
 MIDDLEWARE = [
