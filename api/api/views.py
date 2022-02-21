@@ -58,7 +58,8 @@ class TitlesViewSet(viewsets.ModelViewSet):
     """
     Shows all titles
     """
-    queryset = Title.objects.all()
+    queryset = Title.objects.order_by('-imdb_rating')
+
     serializer_class = TitlesSerializer
     # authentication_classes = [BasicAuthentication]
     # permission_classes = [IsAuthenticated]
@@ -76,8 +77,8 @@ class FilterEpisodesList(generics.ListAPIView):
                 query = {self.kwargs["key"] + "__gte": self.kwargs["value"]}
                 queryset = Episode.objects.filter(**query)
 
-            elif self.kwargs["key"] in ["plot", "poster"]:
-                query = {self.kwargs["key"] + "__contains": self.kwargs["value"]}
+            elif self.kwargs["key"] in ["plot", "poster", "title"]:
+                query = {self.kwargs["key"] + "__icontains": self.kwargs["value"]}
                 queryset = Episode.objects.filter(**query)
 
             elif self.kwargs["key"] in ["released"]:
@@ -122,24 +123,24 @@ class FilterTitlesList(generics.ListAPIView):
     def get_queryset(self):
         try:
             if self.kwargs["key"] in ["genres", "languages"]:
-                query = {self.kwargs["key"] + "__name": self.kwargs["value"]}
-                queryset = Title.objects.filter(**query)
+                query = {self.kwargs["key"] + "__name": self.kwargs["value"].capitalize()}
+                queryset = Title.objects.filter(**query).order_by('-imdb_rating')
 
             elif self.kwargs["key"] in ["imdb_rating"]:
                 query = {self.kwargs["key"] + "__gte": self.kwargs["value"]}
-                queryset = Title.objects.filter(**query)
+                queryset = Title.objects.filter(**query).order_by('-imdb_rating')
 
-            elif self.kwargs["key"] in ["plot", "poster"]:
-                query = {self.kwargs["key"] + "__contains": self.kwargs["value"]}
-                queryset = Title.objects.filter(**query)
+            elif self.kwargs["key"] in ["plot", "poster", "title"]:
+                query = {self.kwargs["key"] + "__icontains": self.kwargs["value"]}
+                queryset = Title.objects.filter(**query).order_by('-imdb_rating')
 
             elif self.kwargs["key"] in ["released", "created", "updated"]:
                 datetime_timestamp = datetime.timestamp(self.kwargs["value"])
                 query = {self.kwargs["key"] + "__date_gte": datetime_timestamp}
-                queryset = Title.objects.filter(**query)
+                queryset = Title.objects.filter(**query).order_by('-imdb_rating')
 
             else:
-                queryset = Title.objects.filter(**{self.kwargs["key"]: self.kwargs["value"]})
+                queryset = Title.objects.filter(**{self.kwargs["key"]: self.kwargs["value"]}).order_by('-imdb_rating')
 
         except (ValidationError, FieldError, TypeError):
             raise Http404

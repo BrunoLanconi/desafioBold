@@ -41,11 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    # allauth dependencies
     'django.contrib.sites',
-    'allauth',
-    'allauth.account',
-    'allauth.socialaccount',
     # crispy_forms dependencies
     "crispy_forms",
 ]
@@ -142,22 +138,20 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
-STATIC_URL = '/static/'
-STATIC_ROOT = '/app/static/'
+if DEBUG:
+    STATIC_URL = "/static/"
+    STATIC_ROOT = BASE_DIR / "/static/"
+    STATICFILES_DIRS = [BASE_DIR / "static"]
+else:
+    STATIC_URL = "/static/"
+    STATIC_ROOT = '/app/static/'
+
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-# allauth dependencies
-AUTHENTICATION_BACKENDS = [
-    'django.contrib.auth.backends.ModelBackend',
-    'allauth.account.auth_backends.AuthenticationBackend',
-]
-SITE_ID = 1
-LOGIN_REDIRECT_URL = "/"  # Where user go after successful login
-EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
 # crispy_forms dependencies
 CRISPY_TEMPLATE_PACK = "bootstrap4"

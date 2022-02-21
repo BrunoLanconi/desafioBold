@@ -181,6 +181,8 @@ services:  # Lists all setup
         ports:
             - "3000"
         environment:
+            WEBSITE_NAME: ${WEBSITE_NAME:-Series website}  # WEBSITE_NAME is the series website title
+            API_LOAD_BALANCER_NAME: bold_api_load_balancer
             DJANGO_PARENT: bold_api_load_balancer  # This instance will wait for DJANGO_PARENT pinging before runserver through wait_for_django_parent.py
             DJANGO_PARENT_PORT: 80  # DJANGO_PARENT_PORT is the DJANGO_PARENT port
             DJANGO_SUPERUSER_USERNAME: admin
@@ -213,6 +215,8 @@ services:  # Lists all setup
         ports:
             - "3000"
         environment:
+            WEBSITE_NAME: ${WEBSITE_NAME:-Series website}  # WEBSITE_NAME is the series website title
+            API_LOAD_BALANCER_NAME: bold_api_load_balancer
             DJANGO_PARENT: bold_main_site1  # This instance will wait for DJANGO_PARENT pinging before runserver through wait_for_django_parent.py
             DJANGO_PARENT_PORT: 3000  # DJANGO_PARENT_PORT is the DJANGO_PARENT port
             DJANGO_SUPERUSER_USERNAME: admin
@@ -245,6 +249,8 @@ services:  # Lists all setup
         ports:
             - "3000"
         environment:
+            WEBSITE_NAME: ${WEBSITE_NAME:-Series website}  # WEBSITE_NAME is the series website title
+            API_LOAD_BALANCER_NAME: bold_api_load_balancer
             DJANGO_PARENT: bold_main_site1  # This instance will wait for DJANGO_PARENT pinging before runserver through wait_for_django_parent.py
             DJANGO_PARENT_PORT: 3000  # DJANGO_PARENT_PORT is the DJANGO_PARENT port
             DJANGO_SUPERUSER_USERNAME: admin
