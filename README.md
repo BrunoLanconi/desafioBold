@@ -23,6 +23,8 @@ want to stress it. The default configuration opens testing ports on host -> load
 `main_site` can be accessed through `localhost` default port `80`.<br>
 `api` can be accessed through `localhost:3030`.<br>
 `api docs` can be accessed through `localhost:3030/swagger/` or `localhost:3030/redoc/`.<br>
+<br>
+For further history acknowledgment view commit comments [clicking here](https://github.com/BrunoLanconi/desafioBold/commits/main) :)
 
 
 # More information
